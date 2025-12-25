@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* "Titan" Palette - Chinese Color Theory Base (Ti) */
+  
+  /* Light Mode Defaults */
+  --background: #ffffff;
+  --foreground: #171717;
+  --void-bg: #ffffff;
+
+  /* Electric Qi: Dynamic pulse colors */
+  /* Cool Qi (Cyan/Blue) */
+  --qi-cool: 0, 180, 216; /* Slightly darker cyan for light mode visibility */
+  /* Warm Qi (Rust/Orange) */
+  --qi-warm: 255, 77, 0;
+
+  --neon-rust: rgb(var(--qi-warm));
+  --cyber-blue: rgb(var(--qi-cool));
+
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --singularity-core: #000000;
+}
+
+.dark {
+  /* Dark Mode Overrides */
+  --void-bg: #030304;
+  --background: var(--void-bg);
+  --foreground: #ededed;
+
+  --qi-cool: 0, 243, 255; /* Original Neon Cyan */
+  
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --singularity-core: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  /* font-family handled by tailwind base via layout.tsx */
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/60 dark:bg-[#151516]/60 backdrop-blur-xl border border-white/40 dark:border-white/10;
+  }
+  
+  .glass-card {
+    @apply bg-white/40 dark:bg-black/40 backdrop-blur-lg border border-white/30 dark:border-white/5;
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+}
