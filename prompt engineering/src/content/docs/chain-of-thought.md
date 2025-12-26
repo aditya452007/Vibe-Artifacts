@@ -1,57 +1,88 @@
 ---
-title: "Chain of Thought"
-description: "Unlocking complex reasoning capabilities through sequential logic."
+title: "Chain of Thought (CoT)"
+description: "Unlocking complex reasoning capabilities through intermediate steps."
 order: 4
-icon: "Cpu"
+icon: "GitPullRequest"
 ---
 
 # Chain of Thought (CoT)
 
-Standard LLMs are optimized for pattern matching and "fast" thinking (System 1). However, they often struggle with tasks requiring logical, sequential reasoning (System 2). **Chain of Thought** (CoT) is a prompting technique that forces the model to generate intermediate reasoning steps before arriving at a final answer.
+Standard prompting ("System 1" thinking) asks the model to jump directly from `Input` to `Output`. For complex tasks—math, logic, symbolic reasoning, strategic planning—this often leads to failure.
 
-## The Dual Process Theory
-Based on the work of psychologist Daniel Kahneman, humans have two modes of thought:
-- **System 1:** Fast, instinctive, and emotional.
-- **System 2:** Slower, more deliberative, and logical.
+**Chain of Thought (CoT)** forces the model to generate intermediate reasoning steps ("System 2" thinking) before arriving at the final answer. This decoupling allows the model to "debug" its own thought process.
 
-CoT effectively shifts the AI from System 1 "guessing" to System 2 "computation."
+## The Mechanism
 
-## 1. Zero-Shot CoT
+```mermaid
+graph LR
+    A[Input] --> B{Reasoning Steps}
+    B --> C[Step 1: Analyze]
+    C --> D[Step 2: Calculate]
+    D --> E[Step 3: Verify]
+    E --> F[Final Output]
+```
 
-The simplest implementation is **Zero-Shot CoT**. By appending a specific trigger phrase to your prompt, you activate the model's latent reasoning capabilities without providing any examples.
+By generating more tokens, the model is essentially "buying time" to compute. It uses the generated tokens as a scratchpad, attending to previous steps to inform the next one.
 
-> **"Let's think step by step."**
+## Zero-Shot CoT
 
-### Why It Works
-When an AI generates text, each word is predicted based on the previous words. Without CoT, the AI must jump straight to the answer. With CoT, the "working space" is moved into the context window. The AI's own intermediate logic becomes part of the prompt for the next step, significantly reducing the likelihood of compounding errors.
+The simplest implementation. You append a "magic phrase" to the end of your prompt.
 
----
+> **Prompt**: "Let's think step by step."
 
-### Examples: Seeing the Difference
+This single phrase triggers the model to decompose the problem.
+*   **Performance**: Can increase accuracy on GSM8K (math benchmark) from ~17% to ~78% (Wei et al., 2022).
+*   **Variation**: "Let's work this out in a step-by-step way to be sure we have the right answer." (Emotional/Accuracy framing).
 
-#### The Math Challenge
-**The Basic Prompt:**
-> "I have 12 markers. I lose 3, then buy 2 packs that have 6 markers each. How many do I have?"
+## Manual CoT (Few-Shot CoT)
 
-**The Enhanced Prompt:**
-> "I have 12 markers. I lose 3, then buy 2 packs that have 6 markers each. How many do I have? **Let's think step by step.**"
-*   **The AI's Improved Response:**
-    1. **Initial state:** 12 markers.
-    2. **Subtraction:** Lose 3 markers ($12 - 3 = 9$).
-    3. **Multiplication:** 2 packs of 6 markers ($2 \times 6 = 12$).
-    4. **Addition:** Current markers + new markers ($9 + 12 = 21$).
-    5. **Final Answer:** 21.
+For higher reliability, you provide examples of *how* to reason. This is superior to Zero-Shot CoT because you define the *style* and *depth* of the reasoning.
 
-#### The Family Riddle
-**The Basic Prompt:**
-> "John has 4 brothers. Each brother has 1 sister. How many sisters does John have?"
+**Prompt Template:**
+```text
+Q: [Question]
+A: [Reasoning Steps]
+The answer is [Answer].
+```
 
-**The Enhanced Prompt:**
-> "John has 4 brothers. Each brother has 1 sister. How many sisters does John have? **Let's think step by step.**"
-*   **The AI's Improved Response:**
-    1. There are 5 boys in total (John + his 4 brothers).
-    2. If every brother has the same sister, that means there is only 1 girl in the family.
-    3. John is part of that same family.
-    4. Therefore, John only has one sister.
-    5. **Final Answer:** 1.
+**Example:**
+```text
+Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?
 
+A: Roger started with 5 balls.
+2 cans of 3 balls each is 2 * 3 = 6 balls.
+5 + 6 = 11.
+The answer is 11.
+
+Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have?
+```
+
+## Advanced Techniques
+
+### 1. Self-Consistency (Majority Voting)
+LLMs are probabilistic. If you run the same CoT prompt 5 times, you might get 5 different reasoning paths.
+**Technique**:
+1.  Generate `k=5` different reasoning paths (with high temperature, e.g., 0.7).
+2.  Extract the final answer from each.
+3.  Take the majority vote.
+*   *Benefit*: Drastically reduces hallucination and arithmetic errors.
+
+### 2. Least-to-Most Prompting
+For problems that are too hard for a single CoT pass.
+1.  **Decomposition**: Ask the model to break the problem into sub-questions.
+    *   *Prompt*: "To solve this, what questions do I need to answer first?"
+2.  **Sequential Solving**: Feed the answer to Sub-Q 1 into the prompt for Sub-Q 2.
+
+### 3. Complexity-Based Consistency
+Instead of just voting, prioritize the reasoning paths that are longer or more complex, as they often correlate with more rigorous analysis (Fu et al., 2023).
+
+## When to Use CoT?
+
+| Use Case | Standard Prompting | Chain of Thought |
+| :--- | :--- | :--- |
+| **Creative Writing** | ✅ Excellent | ❌ Too rigid |
+| **Simple Retrieval** | ✅ Efficient | ❌ Waste of tokens |
+| **Math / Logic** | ❌ Fails often | ✅ Essential |
+| **Coding** | ❌ Buggy | ✅ Explains logic first |
+
+> **Key Insight**: CoT increases latency (more tokens generated) but drastically increases accuracy. It transforms the LLM from a text predictor into a reasoning engine.
