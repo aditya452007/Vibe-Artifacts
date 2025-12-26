@@ -8,15 +8,12 @@ export default function DocsLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex min-h-screen bg-black text-white selection:bg-neon-cyan/30 font-sans">
-            {/* Background Ambient */}
-            <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-black to-black -z-50" />
-
+        <div className="flex min-h-screen bg-background text-foreground font-sans">
             <ScrollHeader showHomeButton={true} />
 
-            <div className="flex w-full pt-20">
+            <div className="flex w-full pt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <Sidebar />
-                <main className="flex-1 relative">
+                <main className="flex-1 relative min-w-0 pl-0 lg:pl-10">
                     {children}
                 </main>
             </div>

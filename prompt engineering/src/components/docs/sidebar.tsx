@@ -3,63 +3,76 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Book, Zap, Cpu, Code, Terminal } from 'lucide-react'
+import { Book, Zap, Cpu, Code, Terminal, Layers, Workflow, GitBranch, Database, FileText } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
-const MENU_ITEMS = [
-    { title: 'The Paradigm', icon: Book, href: '/docs/introduction' },
-    { title: 'Zero-Shot', icon: Zap, href: '/docs/zero-shot' },
-    { title: 'Few-Shot', icon: Code, href: '/docs/few-shot' },
-    { title: 'Chain of Thought', icon: Cpu, href: '/docs/chain-of-thought' },
-    { title: 'ReAct Framework', icon: Terminal, href: '/docs/react' },
+const SECTIONS = [
+    {
+        title: 'Core Concepts',
+        items: [
+            { title: 'The Paradigm', icon: Book, href: '/docs/introduction' },
+            { title: 'Prompt Strategy', icon: Layers, href: '/docs/prompt-strategy' },
+        ]
+    },
+    {
+        title: 'Techniques',
+        items: [
+            { title: 'Zero-Shot', icon: Zap, href: '/docs/zero-shot' },
+            { title: 'Few-Shot', icon: Code, href: '/docs/few-shot' },
+            { title: 'Chain of Thought', icon: Cpu, href: '/docs/chain-of-thought' },
+            { title: 'Tree of Thoughts', icon: GitBranch, href: '/docs/tree-of-thoughts' },
+        ]
+    },
+    {
+        title: 'Advanced Frameworks',
+        items: [
+            { title: 'ReAct', icon: Terminal, href: '/docs/react' },
+            { title: 'RAG Systems', icon: Database, href: '/docs/rag' },
+            { title: 'Meta-Prompting', icon: FileText, href: '/docs/meta-prompting' },
+            { title: 'DSPy', icon: Workflow, href: '/docs/dspy' },
+            { title: 'Agentic Workflows', icon: Workflow, href: '/docs/agentic-workflows' },
+        ]
+    }
 ]
 
 export function Sidebar() {
     const pathname = usePathname()
 
     return (
-        <aside className="hidden md:flex flex-col w-64 h-[calc(100vh-80px)] sticky top-20 border-r border-white/5 bg-black/20 backdrop-blur-xl p-4">
-            <div className="mb-8 px-4 py-2">
-                <h2 className="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-1">Archive</h2>
-                <div className="text-sm font-bold text-white">Knowledge Base</div>
+        <aside className="hidden lg:block w-64 h-[calc(100vh-80px)] sticky top-20 pr-4 overflow-y-auto no-scrollbar">
+            <div className="py-2 mb-4">
+                <h2 className="text-xs font-semibold text-canvas-subtext uppercase tracking-wider mb-0.5">Documentation</h2>
+                <div className="text-sm font-medium text-foreground">Knowledge Base</div>
             </div>
 
-            <nav className="space-y-1">
-                {MENU_ITEMS.map((item) => {
-                    const isActive = pathname === item.href
-                    return (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className={`relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
-                        >
-                            {isActive && (
-                                <motion.div
-                                    layoutId="sidebar-active"
-                                    className="absolute inset-0 bg-white/5 border border-white/10 rounded-xl"
-                                    initial={false}
-                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                />
-                            )}
-
-                            <item.icon className={`w-4 h-4 relative z-10 ${isActive ? 'text-neon-cyan' : 'group-hover:text-white transition-colors'}`} />
-                            <span className="text-sm font-medium relative z-10">{item.title}</span>
-
-                            {isActive && (
-                                <div className="absolute right-3 w-1.5 h-1.5 rounded-full bg-neon-cyan shadow-[0_0_10px_#00ffed]" />
-                            )}
-                        </Link>
-                    )
-                })}
+            <nav className="space-y-8">
+                {SECTIONS.map((section, idx) => (
+                    <div key={idx}>
+                        <h3 className="px-3 mb-2 text-[11px] font-semibold text-canvas-subtext uppercase tracking-wider">{section.title}</h3>
+                        <div className="space-y-0.5">
+                            {section.items.map((item) => {
+                                const isActive = pathname === item.href
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        className={cn(
+                                            "relative flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-200 group",
+                                            isActive ? "bg-foreground/5 text-foreground" : "text-canvas-subtext hover:text-foreground hover:bg-foreground/5"
+                                        )}
+                                    >
+                                        <item.icon className={cn(
+                                            "w-4 h-4 transition-colors",
+                                            isActive ? "text-system-blue" : "text-canvas-subtext group-hover:text-foreground"
+                                        )} />
+                                        <span className="text-[13px] font-medium">{item.title}</span>
+                                    </Link>
+                                )
+                            })}
+                        </div>
+                    </div>
+                ))}
             </nav>
-
-            <div className="mt-auto px-4 py-6 border-t border-white/5">
-                <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5">
-                    <div className="text-xs text-zinc-400 mb-2">Need Help?</div>
-                    <button className="text-xs text-neon-cyan hover:underline hover:text-white transition-colors">
-                        Run Diagnostics
-                    </button>
-                </div>
-            </div>
         </aside>
     )
 }

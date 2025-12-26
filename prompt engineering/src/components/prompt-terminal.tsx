@@ -44,98 +44,80 @@ export function PromptTerminal() {
     }, [selectedModule])
 
     return (
-        <div className="w-full max-w-6xl mx-auto h-[700px] flex gap-6 p-6 font-mono">
+        <div className="w-full max-w-6xl mx-auto h-[600px] flex gap-8 p-6 font-sans">
             {/* Sidebar: Module List */}
             <div className="w-1/3 flex flex-col gap-2 relative z-10">
-                <div className="mb-4 text-xs font-bold text-gray-tint-500 uppercase tracking-widest pl-2">
-          // Available Modules_
+                <div className="mb-4 text-[11px] font-semibold text-canvas-subtext uppercase tracking-widest pl-2">
+                    Available Modules
                 </div>
-                <div className="flex-1 overflow-y-auto pr-2 space-y-1 scrollbar-hide">
+                <div className="flex-1 overflow-y-auto pr-2 space-y-1 no-scrollbar">
                     {ARCHETYPES.map((arch) => {
                         const isActive = selectedId === arch.id
                         const Icon = arch.icon
 
                         return (
-                            <motion.button
+                            <button
                                 key={arch.id}
                                 onClick={() => setSelectedId(arch.id)}
-                                whileHover={{ x: 4, backgroundColor: 'rgba(0, 255, 255, 0.05)' }}
                                 className={cn(
-                                    "w-full text-left px-4 py-3 border border-transparent transition-all duration-300 flex items-center gap-3 group rounded-none",
+                                    "w-full text-left px-4 py-2.5 rounded-lg transition-all duration-200 flex items-center gap-3 group relative",
                                     isActive
-                                        ? "bg-void-surface border-cyan-500/30 shadow-[0_0_15px_rgba(0,255,255,0.15)] bg-[rgba(0,255,255,0.02)]"
-                                        : "hover:border-white/5 text-gray-tint-500 hover:text-cyan-200"
+                                        ? "bg-foreground/5 text-foreground"
+                                        : "hover:bg-foreground/5 text-canvas-subtext hover:text-foreground"
                                 )}
                             >
-                                <Icon className={cn("w-4 h-4 transition-colors", isActive ? "text-neon-cyan drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]" : "text-gray-600 group-hover:text-cyan-400")} />
-                                <span className={cn("text-sm tracking-wide", isActive ? "text-white font-semibold" : "")}>
+                                <Icon className={cn("w-4 h-4 transition-colors", isActive ? "text-system-blue" : "text-canvas-subtext group-hover:text-foreground")} />
+                                <span className={cn("text-[13px] font-medium tracking-wide", isActive ? "text-foreground" : "")}>
                                     {arch.label}
                                 </span>
-                                {isActive && (
-                                    <motion.div
-                                        layoutId="active-indicator"
-                                        className="ml-auto w-1.5 h-1.5 bg-neon-cyan shadow-[0_0_10px_#00ffff]"
-                                    />
-                                )}
-                            </motion.button>
+                            </button>
                         )
                     })}
                 </div>
             </div>
 
             {/* Main View: Schematic & Console */}
-            <div className="flex-1 relative glass-panel rounded-sm flex flex-col overflow-hidden">
-                {/* Decor Elements */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent opacity-50" />
-                <div className="absolute top-4 right-4 flex gap-1">
-                    <div className="w-2 h-2 bg-red-500/20 rounded-full" />
-                    <div className="w-2 h-2 bg-yellow-500/20 rounded-full" />
-                    <div className="w-2 h-2 bg-green-500/20 rounded-full" />
-                </div>
+            <div className="flex-1 relative bg-surface/50 border border-border/50 rounded-2xl flex flex-col overflow-hidden shadow-sm">
 
                 <AnimatePresence mode="wait">
                     {selectedModule && (
                         <motion.div
                             key={selectedModule.id}
-                            initial={{ opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
-                            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                            exit={{ opacity: 0, scale: 1.02, filter: 'blur(4px)' }}
-                            transition={{ duration: 0.4, ease: "circOut" }}
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.98 }}
+                            transition={{ duration: 0.3 }}
                             className="flex flex-col h-full p-8 relative z-20"
                         >
                             {/* Header */}
-                            <div className="mb-8 border-b border-white/5 pb-4">
-                                <div className="text-neon-cyan text-xs mb-2 tracking-[0.2em] opacity-70">ARCHETYPE_ID: {selectedModule.id.toUpperCase()}</div>
-                                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-500">
+                            <div className="mb-6 border-b border-border/50 pb-4">
+                                <div className="text-canvas-subtext text-[10px] font-bold mb-2 tracking-widest uppercase">ARCHETYPE_ID: {selectedModule.id.toUpperCase()}</div>
+                                <h2 className="text-2xl font-bold text-foreground tracking-tight">
                                     {selectedModule.label}
                                 </h2>
                             </div>
 
                             {/* Description Typewriter */}
-                            <div className="mb-8 min-h-[80px] text-gray-tint-300 text-lg leading-relaxed">
+                            <div className="mb-8 min-h-[60px] text-foreground/80 text-lg leading-relaxed font-light">
                                 {typedText}
-                                <span className="inline-block w-2.5 h-5 bg-neon-cyan ml-1 animate-flicker align-middle" />
                             </div>
 
                             {/* Mini-Console */}
-                            <div className="mt-auto bg-black/40 border border-white/5 rounded p-4 font-mono text-sm relative group overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                                <div className="text-gray-500 text-xs mb-2 border-b border-white/5 pb-2 flex justify-between">
-                                    <span>LIVE_PREVIEW</span>
-                                    <span className="text-green-500">READY</span>
+                            <div className="mt-auto bg-background border border-border rounded-xl p-5 font-mono text-sm shadow-sm">
+                                <div className="text-canvas-subtext text-[10px] font-bold mb-3 border-b border-border/50 pb-2 flex justify-between tracking-wider uppercase">
+                                    <span>Live Preview</span>
+                                    <span className="text-green-500">Ready</span>
                                 </div>
-                                <pre className="text-gray-tint-300 whitespace-pre-wrap relative z-10 selection:bg-neon-magenta/30">
-                                    <span className="text-neon-purple font-bold">In:</span> {selectedModule.code}
+                                <pre className="text-foreground/90 whitespace-pre-wrap relative z-10 selection:bg-system-blue/20">
+                                    <span className="text-purple-500 font-bold">In:</span> {selectedModule.code}
                                 </pre>
 
-                                {/* Jelly Button */}
-                                <motion.button
-                                    whileTap={{ scale: 0.95 }}
-                                    className="mt-4 px-4 py-2 bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan text-xs hover:bg-neon-cyan/20 transition-colors uppercase tracking-widest"
+                                {/* Action Button */}
+                                <button
+                                    className="mt-5 px-4 py-2 bg-foreground text-background text-xs font-semibold rounded-lg hover:opacity-90 transition-opacity uppercase tracking-wider"
                                 >
                                     Execute
-                                </motion.button>
+                                </button>
                             </div>
                         </motion.div>
                     )}

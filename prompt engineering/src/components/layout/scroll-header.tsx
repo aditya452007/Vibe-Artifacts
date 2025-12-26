@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { useRouter } from 'next/navigation'
 import { Home } from 'lucide-react'
@@ -16,17 +16,13 @@ export function ScrollHeader({
     const router = useRouter()
     const [hasScrolled, setHasScrolled] = useState(false)
 
-    // Use MotionValues for smooth transform
-    // At scrollY=0: Opacity 0, Y -100
-    // Header should appear ONLY after passing the Hero section (approx 800px)
-    // "Comes little faster" -> Short transition range
-    const headerY = useTransform(scrollY, [750, 850], [-50, 0])
-    const headerOpacity = useTransform(scrollY, [750, 850], [0, 1])
+    // Smooth appearance logic
+    const headerY = useTransform(scrollY, [600, 700], [-20, 0])
+    const headerOpacity = useTransform(scrollY, [600, 700], [0, 1])
 
-    // Track scroll state for React condition rendering if needed, though useTransform is better for performance
     useEffect(() => {
         const unsubscribe = scrollY.on("change", (latest) => {
-            setHasScrolled(latest > 750)
+            setHasScrolled(latest > 600)
         })
         return () => unsubscribe()
     }, [scrollY])
@@ -35,35 +31,32 @@ export function ScrollHeader({
         <>
             <motion.header
                 style={{ y: headerY, opacity: headerOpacity }}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                className="fixed top-8 left-1/2 -translate-x-1/2 z-50 origin-top"
+                className="fixed top-6 left-1/2 -translate-x-1/2 z-50 origin-top pointer-events-none" // Pointer events none wrapper to avoid blocking clicks around
             >
                 {/* 
-                  Apple-level Glass 2.0: 
-                  - Ultra-High Blur (backdrop-blur-3xl)
-                  - Translucent dark surface (bg-black/40)
-                  - Specular border (border-white/10)
-                  - Ambient shadow glow
+                  Apple-level Dynamic Island / Pill:
+                  - High blur (backdrop-blur-xl)
+                  - Subtle border
+                  - Smooth shadow
                 */}
-                <div className="bg-black/40 backdrop-blur-3xl rounded-full pl-6 pr-6 py-3 flex items-center gap-8 shadow-[0_0_40px_rgba(0,0,0,0.2)] border border-white/5 hover:border-white/20 transition-all duration-500 hover:bg-black/50 hover:shadow-[0_0_60px_rgba(34,213,94,0.05)]">
+                <div className="pointer-events-auto bg-surface/70 backdrop-blur-xl rounded-full pl-5 pr-5 py-2.5 flex items-center gap-6 shadow-lg shadow-black/5 border border-border/50 transition-all hover:bg-surface/90">
 
                     {showHomeButton && (
-                        <button onClick={() => router.push('/')} className="text-zinc-500 hover:text-white transition-colors duration-300">
+                        <button onClick={() => router.push('/')} className="text-canvas-subtext hover:text-foreground transition-colors">
                             <Home className="w-4 h-4" />
                         </button>
                     )}
 
-                    <div className="flex items-center gap-3 select-none">
+                    <div className="flex items-center gap-2 select-none">
                         <div className="relative flex items-center justify-center">
-                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse z-10" />
-                            <div className="absolute w-3 h-3 bg-green-500/20 rounded-full blur-[1px]" />
+                            <span className="w-2 h-2 bg-system-blue rounded-full" />
                         </div>
-                        <span className="font-geist-sans font-medium text-xs tracking-[0.2em] text-zinc-300">
-                            PROMPT OPS
+                        <span className="font-sans font-medium text-xs tracking-wide text-foreground">
+                            Prompt Ops
                         </span>
                     </div>
 
-                    <div className="h-3 w-[1px] bg-white/5" />
+                    <div className="h-4 w-[1px] bg-border" />
 
                     <div className="scale-90">
                         <ThemeToggle />
@@ -71,18 +64,15 @@ export function ScrollHeader({
                 </div>
             </motion.header>
 
-            {/* Fallback for pages that always need a header (like Workstation) */}
+            {/* Permanent Header for Workstation */}
             {showHomeButton && !hasScrolled && (
                 <div className="fixed top-6 left-1/2 -translate-x-1/2 z-40">
-                    <div className="bg-void-surface/70 glass-heavy rounded-full px-6 py-3 flex items-center gap-6 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-                        <button onClick={() => router.push('/')} className="text-gray-400 hover:text-neon-cyan transition-colors">
-                            <Home className="w-5 h-5" />
+                    <div className="bg-surface/80 backdrop-blur-xl rounded-full px-5 py-2.5 flex items-center gap-4 shadow-sm border border-border/50">
+                        <button onClick={() => router.push('/')} className="text-canvas-subtext hover:text-foreground transition-colors">
+                            <Home className="w-4 h-4" />
                         </button>
-                        <div className="flex items-center gap-2 font-mono text-sm tracking-widest text-white">
-                            <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse" />
-                            <span>WORKSTATION</span>
-                        </div>
-                        <div className="h-4 w-[1px] bg-white/10" />
+                        <span className="text-xs font-medium text-foreground tracking-wide">Workstation</span>
+                        <div className="h-4 w-[1px] bg-border" />
                         <ThemeToggle />
                     </div>
                 </div>
