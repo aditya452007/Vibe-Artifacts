@@ -15,6 +15,19 @@ A collection of high-performance digital artifacts, featuring modern web technol
 
 ---
 
+### 📝 [Prompt Engineering](./prompt engineering)
+
+A working prototype for prompt engineering documentation.
+
+> [!WARNING]
+> **Status**: This project is currently **not maintained correctly** and contains **bugs**.
+>
+> This is a working prototype, not a production-level ready application. The prompt docs are currently small.
+
+**Contributions are welcome!** Help is needed to improve the project and solve bugs.
+
+---
+
 ## 🛠️ Repository Structure
 
 This repository is organized as a collection of projects. Currently, it houses:

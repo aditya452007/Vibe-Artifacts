@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #050a14;
+  --color-void-deep: #020408;
+  --color-void-surface: #0f172a;
+  
+  --color-solar: #f8fafc; /* slate-50 */
+  --color-solar-deep: #ffffff;
+  --color-solar-surface: #f1f5f9; /* slate-100 */
+
+  --color-neon-cyan: #00ffff;
+  --color-neon-magenta: #ff00ff;
+  --color-neon-purple: #d946ef;
+  
+  /* Semantic "Colored Grays" */
+  --color-gray-tint-900: #0f1729; 
+  --color-gray-tint-800: #1e293b;
+  --color-gray-tint-500: #64748b;
+  --color-gray-tint-300: #cbd5e1;
+  
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+}
+
+:root {
+  /* Default to VOID (Dark) */
+  --background: var(--color-void);
+  --foreground: var(--color-gray-tint-300);
+  --surface: var(--color-void-surface);
+  --border-color: rgba(148, 163, 184, 0.1);
+  
+  --sidebar-width: 18rem;
+}
+
+[data-theme="light"] {
+  /* SOLAR (Light) Mode - Solarpunk/Ceramic Aesthetic */
+  --background: var(--color-solar);
+  --foreground: #334155; /* slate-700 */
+  --surface: #ffffff;
+  --border-color: rgba(148, 163, 184, 0.2);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s ease;
+}
+
+/* Utilities */
+@utility glass {
+  background: rgba(5, 10, 20, 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .glass {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@utility glass-heavy {
+  background: rgba(5, 10, 20, 0.8);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .glass-heavy {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@utility glow-text-cyan {
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+@utility glow-box-cyan {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+@utility glow-box-magenta {
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+}
+
+/* Animation Utilities */
+@keyframes flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 1; }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.8; }
+}
+
+.animate-flicker {
+  animation: flicker 3s infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00ffff;
+}
