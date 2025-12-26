@@ -1,7 +1,7 @@
 'use client';
 
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 export default function ThemeToggle() {
     const { theme, toggleTheme } = useTheme();

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useSpring, useTransform, useMotionValue, useInView } from 'framer-motion';
+import { motion, useSpring, useTransform, useMotionValue, useInView } from 'motion/react';
 import { useEffect, useRef } from 'react';
 
 export const MotionNumber = ({ value }: { value: number }) => {
