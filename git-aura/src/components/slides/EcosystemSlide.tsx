@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { GitHubData } from '@/types/github';
 
 // Helper to calculate polygon points

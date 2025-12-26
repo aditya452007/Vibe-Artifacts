@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { GitHubData } from '@/types/github';
 import { MotionNumber } from '../ui/MotionNumber';
 import { fetchYear } from '@/lib/data-service';

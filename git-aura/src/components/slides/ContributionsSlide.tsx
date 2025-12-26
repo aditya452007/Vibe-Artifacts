@@ -1,10 +1,10 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'motion/react';
 import { ContributionStats } from '@/types/github';
 import { MotionNumber } from '../ui/MotionNumber';
 import { GitCommit, GitPullRequest, CircleDot, Eye } from 'lucide-react';
 
-const container = {
+const container: Variants = {
     hidden: { opacity: 0 },
     show: {
         opacity: 1,
@@ -15,7 +15,7 @@ const container = {
     }
 };
 
-const item = {
+const item: Variants = {
     hidden: { y: 20, opacity: 0, scale: 0.95 },
     show: {
         y: 0,

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { toPng } from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { GitHubData } from '@/types/github';

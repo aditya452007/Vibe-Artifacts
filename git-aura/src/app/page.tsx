@@ -1,6 +1,4 @@
-import ThemeToggle from '@/components/ThemeToggle';
-import SingularityLogo from '@/components/landing/SingularityLogo';
-import VisualizerInput from '@/components/landing/VisualizerInput';
+import { DynamicThemeToggle, DynamicSingularityLogo, DynamicVisualizerInput } from '@/components/landing/LazyLandingComponents';
 
 export default function LandingPage() {
     return (
@@ -8,7 +6,7 @@ export default function LandingPage() {
 
             {/* Theme Toggle (Top Right) */}
             <div className="absolute top-6 right-6 z-50">
-                <ThemeToggle />
+                <DynamicThemeToggle />
             </div>
 
             {/* Atmospheric Depth (Mist/Noise) - Global */}
@@ -26,7 +24,7 @@ export default function LandingPage() {
                         </p>
                     </div>
 
-                    <VisualizerInput />
+                    <DynamicVisualizerInput />
                 </div>
 
                 {/* Footer Status */}
@@ -40,7 +38,7 @@ export default function LandingPage() {
                 {/* Radial Gradient for Depth */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,var(--void-bg)_120%)] pointer-events-none" />
 
-                <SingularityLogo />
+                <DynamicSingularityLogo />
             </section>
         </main>
     );
