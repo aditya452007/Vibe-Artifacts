@@ -3,7 +3,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { z } from 'zod';
-import { logInteraction } from '@/lib/logger';
+import { logInteraction } from '@/lib/db';
 
 // Remove Edge Runtime to support SQLite logging
 // export const runtime = 'edge';
