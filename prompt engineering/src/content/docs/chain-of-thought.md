@@ -1,57 +1,55 @@
 ---
-title: "Chain of Thought"
-description: "Unlocking complex reasoning capabilities through sequential logic."
+title: "Chain of Thought (CoT)"
+description: "Unlocking complex reasoning capabilities through intermediate steps."
 order: 4
-icon: "Cpu"
+icon: "GitPullRequest"
 ---
 
 # Chain of Thought (CoT)
 
-Standard LLMs are optimized for pattern matching and "fast" thinking (System 1). However, they often struggle with tasks requiring logical, sequential reasoning (System 2). **Chain of Thought** (CoT) is a prompting technique that forces the model to generate intermediate reasoning steps before arriving at a final answer.
+Standard prompting asks the model to jump directly from `Input` to `Output`. For complex tasks (math, logic, strategic planning), this often fails. **Chain of Thought (CoT)** forces the model to generate intermediate reasoning steps before arriving at the final answer.
 
-## The Dual Process Theory
-Based on the work of psychologist Daniel Kahneman, humans have two modes of thought:
-- **System 1:** Fast, instinctive, and emotional.
-- **System 2:** Slower, more deliberative, and logical.
+## The Mechanism
 
-CoT effectively shifts the AI from System 1 "guessing" to System 2 "computation."
+CoT decouples the reasoning process from the answer generation. This allows the model to "debug" its own thought process.
 
-## 1. Zero-Shot CoT
+```mermaid
+graph LR
+    A[Input] --> B{Reasoning Steps}
+    B --> C[Step 1: Analyze]
+    C --> D[Step 2: Calculate]
+    D --> E[Step 3: Verify]
+    E --> F[Final Output]
+```
 
-The simplest implementation is **Zero-Shot CoT**. By appending a specific trigger phrase to your prompt, you activate the model's latent reasoning capabilities without providing any examples.
+## Zero-Shot CoT
 
-> **"Let's think step by step."**
+The simplest implementation. You simply append a "magic phrase" to the end of your prompt.
 
-### Why It Works
-When an AI generates text, each word is predicted based on the previous words. Without CoT, the AI must jump straight to the answer. With CoT, the "working space" is moved into the context window. The AI's own intermediate logic becomes part of the prompt for the next step, significantly reducing the likelihood of compounding errors.
+> **Prompt**: "Let's think step by step."
 
----
+This single phrase can significantly boost performance on benchmark reasoning tasks (e.g., GSM8K). It triggers the model to output a sequence of thoughts rather than just a token.
 
-### Examples: Seeing the Difference
+## Manual CoT (Few-Shot CoT)
 
-#### The Math Challenge
-**The Basic Prompt:**
-> "I have 12 markers. I lose 3, then buy 2 packs that have 6 markers each. How many do I have?"
+For higher reliability, you provide examples of *how* to reason.
 
-**The Enhanced Prompt:**
-> "I have 12 markers. I lose 3, then buy 2 packs that have 6 markers each. How many do I have? **Let's think step by step.**"
-*   **The AI's Improved Response:**
-    1. **Initial state:** 12 markers.
-    2. **Subtraction:** Lose 3 markers ($12 - 3 = 9$).
-    3. **Multiplication:** 2 packs of 6 markers ($2 \times 6 = 12$).
-    4. **Addition:** Current markers + new markers ($9 + 12 = 21$).
-    5. **Final Answer:** 21.
+```text
+Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?
 
-#### The Family Riddle
-**The Basic Prompt:**
-> "John has 4 brothers. Each brother has 1 sister. How many sisters does John have?"
+A: Roger started with 5 balls.
+2 cans of 3 balls each is 2 * 3 = 6 balls.
+5 + 6 = 11.
+The answer is 11.
 
-**The Enhanced Prompt:**
-> "John has 4 brothers. Each brother has 1 sister. How many sisters does John have? **Let's think step by step.**"
-*   **The AI's Improved Response:**
-    1. There are 5 boys in total (John + his 4 brothers).
-    2. If every brother has the same sister, that means there is only 1 girl in the family.
-    3. John is part of that same family.
-    4. Therefore, John only has one sister.
-    5. **Final Answer:** 1.
+Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have?
+```
 
+## Least-to-Most Prompting
+
+A variant of CoT where the model is first asked to decompose a complex problem into sub-problems, and then solve them sequentially.
+
+1.  **Decomposition**: "To solve this, what questions do I need to answer first?"
+2.  **Execution**: Solving each sub-question.
+
+> **Key Insight**: CoT increases latency (more tokens generated) but drastically increases accuracy for logic-heavy tasks. It is the foundation of "System 2" thinking in LLMs.

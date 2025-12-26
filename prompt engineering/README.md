@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prompt Engineering Architecture
 
-## Getting Started
+Welcome to the definitive knowledge base for **Prompt Engineering**. This documentation is designed to guide you from foundational concepts to advanced cognitive architectures.
 
-First, run the development server:
+## Core Curriculum
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. Foundations
+*   [**The Paradigm Shift**](/docs/introduction): Understand the latent space and the shift from syntax to semantics.
+*   [**Zero-Shot Prompting**](/docs/zero-shot): Master the baseline capabilities and instruction tuning nuances.
+*   [**Few-Shot Prompting**](/docs/few-shot): Leverage in-context learning for precision.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Reasoning Architectures
+*   [**Chain of Thought (CoT)**](/docs/chain-of-thought): Unlock complex reasoning via intermediate steps.
+*   [**Tree of Thoughts (ToT)**](/docs/tree-of-thoughts): Explore non-linear search strategies for problem solving.
+*   [**ReAct Framework**](/docs/react-framework): Synergize reasoning and acting for autonomous agents.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Advanced Engineering
+*   [**RAG-Optimized Prompting**](/docs/rag-optimized-prompting): Integrate retrieved context effectively.
+*   [**Meta-Prompting**](/docs/meta-prompting): Use AI to architect AI systems.
+*   [**DSPy Paradigm**](/docs/dspy-paradigm): Move from prompt hacking to declarative programming.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Agentic Systems
+*   [**Agentic Workflows**](/docs/agentic-workflows): Design autonomous systems with multi-step planning.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+This knowledge base is a living document. We adhere to **Visual Aesthetic Markdown**. Please review the `PLAN.md` for style guidelines before contributing.

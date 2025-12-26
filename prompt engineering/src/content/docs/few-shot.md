@@ -1,47 +1,61 @@
 ---
-title: "Few-Shot Logic"
-description: "In-context learning through pattern demonstration."
+title: "Few-Shot Prompting"
+description: "Leveraging In-Context Learning for precision and consistency."
 order: 3
-icon: "Code"
+icon: "Layers"
 ---
 
-# Few-Shot Logic
+# Few-Shot Architectures
 
-When zero-shot fails, **Few-Shot Prompting** (In-Context Learning) is the next logical escalation. It involves providing a few demonstrations of the task (input -> output) before asking for the actual inference.
+Few-Shot Prompting (also known as In-Context Learning) involves providing the model with a set of examples (demonstrations) before asking it to perform a task. This drastically improves performance on complex tasks, formatting compliance, and style mimicry.
 
-## The Format
+## The Mechanism
 
-Standard Few-Shot prompts follow a pattern:
-1.  Instruction
-2.  Example 1 (Input -> Output)
-3.  Example 2 (Input -> Output)
-4.  Target Input ->
+By providing examples, you are essentially "fine-tuning" the model temporarily within the prompt window.
 
-## Why It Works
+```mermaid
+graph TD
+    A[Instruction] --> B[Example 1]
+    B --> C[Example 2]
+    C --> D[Example 3]
+    D --> E[Target Task]
+    E --> F[Output]
+```
 
-Few-shot prompting doesn't update the model's weights. Instead, it temporarily steers the model's attention mechanism to copy the **pattern** and **style** of the provided examples.
+## The Power of Exemplars
 
-### Example: Custom Entity Extraction
+The examples you choose (Exemplars) are the most critical part of a Few-Shot prompt.
 
-**Prompt:**
+### 1. Label Space Distribution
+If your task involves classification (e.g., Sentiment Analysis), ensure your examples cover the full range of labels (Positive, Negative, Neutral) in a balanced way.
+
+### 2. Format Consistency
+The model is a pattern-matching machine. If your examples follow a specific structure (e.g., `Input -> Thinking -> Output`), the model will replicate that structure.
+
 ```text
-Extract colors and link them to objects in JSON format.
+Classify the sentiment of the following tweets:
 
-Input: The sky was azure and the grass was emerald.
-Output: {"sky": "azure", "grass": "emerald"}
+Tweet: "I love this product!"
+Sentiment: Positive
 
-Input: His eyes were coal black, staring at the ruby rose.
-Output: {"eyes": "coal black", "rose": "ruby"}
+Tweet: "This is the worst service ever."
+Sentiment: Negative
 
-Input: The golden sun set over the purple mountains.
-Output:
+Tweet: "It arrived on time."
+Sentiment: Neutral
+
+Tweet: "I'm not sure how I feel about this."
+Sentiment:
 ```
 
-**Completion:**
-```json
-{"sun": "golden", "mountains": "purple"}
-```
+## Selection Strategies
 
-## Advanced Few-Shot
-*   **Chain-of-Thought Few-Shot**: Include the *reasoning* in your examples, not just the answer.
-*   **Diversity**: Ensure your examples cover different edge cases to prevent the model from overfitting to one specific format.
+*   **Fixed K-Shot**: Using a static set of 3-5 high-quality examples.
+*   **Dynamic K-Shot (RAG)**: Dynamically retrieving the most relevant examples from a database based on the user's current query. This is highly effective for large datasets.
+
+## Common Pitfalls
+
+*   **Recency Bias**: Models tend to over-prioritize the examples at the very end of the prompt.
+*   **Example Contamination**: If your examples contain wrong information, the model might adopt the error as a rule.
+
+> **Key Insight**: Few-Shot prompting is often more effective than fine-tuning for adapting general-purpose models to specific, lightweight tasks.
