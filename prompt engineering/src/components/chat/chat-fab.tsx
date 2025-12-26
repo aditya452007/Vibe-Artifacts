@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { MessageSquarePlus } from 'lucide-react'
 import { ModelSetupModal } from './model-setup-modal'
 
@@ -16,7 +16,7 @@ export function ChatFAB() {
                 animate={{ scale: 1, opacity: 1 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="fixed bottom-8 right-8 z-50 w-14 h-14 bg-white/10 backdrop-blur-xl text-white rounded-full shadow-2xl border border-white/20 flex items-center justify-center transition-all hover:bg-white/20"
+                className="fixed bottom-8 right-8 z-50 w-14 h-14 bg-foreground text-background rounded-full shadow-lg shadow-black/10 flex items-center justify-center transition-all hover:shadow-xl"
             >
                 <MessageSquarePlus className="w-6 h-6" />
             </motion.button>

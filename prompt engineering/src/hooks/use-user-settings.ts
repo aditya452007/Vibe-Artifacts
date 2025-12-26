@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 import { type ModelProvider } from '@/lib/api-keys'
 
 interface UserSettingsState {
@@ -19,10 +19,10 @@ export const useUserSettings = create<UserSettingsState>()(
             apiKeys: {},
             selectedModels: ['gemini'], // Default
             activeModels: {
-                gemini: 'gemini-3-flash-preview',
-                openai: 'gpt-5.2',
-                claude: 'claude-sonnet-4-20250514',
-                meta: 'llama-3.3-70b-instruct'
+                gemini: 'gemini-1.5-flash',
+                openai: 'gpt-4o',
+                claude: 'claude-3-5-sonnet-20240620',
+                meta: 'llama-3.1-70b-versatile'
             },
 
             setApiKey: (provider, key) => set((state) => ({
@@ -35,7 +35,7 @@ export const useUserSettings = create<UserSettingsState>()(
                     // Prevent removing the last one? Or allow it.
                     return { selectedModels: state.selectedModels.filter(m => m !== provider) }
                 }
-                return { selectedModels: [...state.selectedModels, provider] } // Limit to 4 if needed
+                return { selectedModels: [...state.selectedModels, provider] }
             }),
 
             setActiveModel: (provider, modelId) => set((state) => ({
@@ -46,15 +46,16 @@ export const useUserSettings = create<UserSettingsState>()(
                 apiKeys: {},
                 selectedModels: ['gemini'],
                 activeModels: {
-                    gemini: 'gemini-3-flash-preview',
-                    openai: 'gpt-5.2',
-                    claude: 'claude-sonnet-4-20250514',
-                    meta: 'llama-3.3-70b-instruct'
+                    gemini: 'gemini-1.5-flash',
+                    openai: 'gpt-4o',
+                    claude: 'claude-3-5-sonnet-20240620',
+                    meta: 'llama-3.1-70b-versatile'
                 }
             })
         }),
         {
-            name: 'prompt-platform-settings', // localStorage key
+            name: 'prompt-platform-settings',
+            storage: createJSONStorage(() => localStorage),
         }
     )
 )

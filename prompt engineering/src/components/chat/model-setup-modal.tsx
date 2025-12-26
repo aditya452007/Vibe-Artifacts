@@ -34,34 +34,35 @@ export function ModelSetupModal({ isOpen, onClose }: { isOpen: boolean; onClose:
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        className="absolute inset-0 bg-background/60 backdrop-blur-sm"
                         onClick={onClose}
                     />
 
                     <motion.div
-                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                        initial={{ scale: 0.95, opacity: 0, y: 10 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        className="relative w-full max-w-2xl bg-void-surface/90 glass-heavy rounded-2xl p-8 border border-white/10 shadow-2xl overflow-hidden"
+                        exit={{ scale: 0.95, opacity: 0, y: 10 }}
+                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                        className="relative w-full max-w-2xl bg-surface glass shadow-2xl rounded-2xl p-8 border border-border overflow-hidden"
                     >
                         {/* Header */}
-                        <div className="flex justify-between items-start mb-8">
+                        <div className="flex justify-between items-start mb-6">
                             <div>
-                                <h2 className="text-2xl font-bold text-white mb-2">Initialize Inference Engine</h2>
-                                <p className="text-gray-400 text-sm">Select active modules and verify credentials.</p>
+                                <h2 className="text-xl font-semibold text-foreground mb-1">Initialize Inference Engine</h2>
+                                <p className="text-canvas-subtext text-sm">Select active modules and verify credentials.</p>
                             </div>
-                            <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                                <X className="w-5 h-5 text-gray-400" />
+                            <button onClick={onClose} className="p-1.5 hover:bg-foreground/5 rounded-full transition-colors">
+                                <X className="w-5 h-5 text-canvas-subtext" />
                             </button>
                         </div>
 
                         {/* Model Selection Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                             {(Object.keys(MODEL_CONFIGS) as ModelProvider[]).map((id) => {
                                 const isSelected = selectedModels.includes(id)
 
                                 // Icon mapping
-                                const Icon = id === 'gemini' ? Cpu // Using generic icons for now as Lucide doesn't have brand icons, but styling them distinctively
+                                const Icon = id === 'gemini' ? Cpu
                                     : id === 'openai' ? Zap
                                         : id === 'claude' ? Brain
                                             : Network
@@ -71,20 +72,20 @@ export function ModelSetupModal({ isOpen, onClose }: { isOpen: boolean; onClose:
                                         key={id}
                                         onClick={() => toggleModel(id)}
                                         className={cn(
-                                            "relative p-4 rounded-xl border transition-all duration-200 flex flex-col items-center gap-3 text-center",
-                                            "hover:bg-white/5 active:scale-95", // Subtle interaction only
+                                            "relative p-4 rounded-xl border transition-all duration-200 flex flex-col items-center gap-2.5 text-center",
+                                            "hover:bg-foreground/5 active:scale-98",
                                             isSelected
-                                                ? "bg-white/5 border-neon-cyan/50 shadow-[0_0_20px_rgba(0,255,255,0.15)]"
-                                                : "bg-transparent border-white/10 text-gray-500 hover:border-white/20"
+                                                ? "bg-foreground/5 border-system-blue shadow-sm ring-1 ring-system-blue/20"
+                                                : "bg-surface border-border text-canvas-subtext hover:border-foreground/20"
                                         )}
                                     >
                                         <div className={cn(
-                                            "w-12 h-12 rounded-xl flex items-center justify-center transition-colors glass-heavy",
-                                            isSelected ? "text-neon-cyan border border-neon-cyan/30" : "text-gray-500 border border-white/5"
+                                            "w-10 h-10 rounded-lg flex items-center justify-center transition-colors",
+                                            isSelected ? "text-system-blue bg-system-blue/10" : "text-canvas-subtext bg-foreground/5"
                                         )}>
-                                            <Icon className="w-6 h-6" />
+                                            <Icon className="w-5 h-5" />
                                         </div>
-                                        <span className={cn("text-[10px] font-mono tracking-widest uppercase", isSelected ? "text-white" : "")}>
+                                        <span className={cn("text-[10px] font-medium tracking-wide uppercase", isSelected ? "text-foreground" : "")}>
                                             {MODEL_CONFIGS[id].name}
                                         </span>
                                     </button>
@@ -92,7 +93,7 @@ export function ModelSetupModal({ isOpen, onClose }: { isOpen: boolean; onClose:
                             })}
                         </div>
                         {/* API Key Inputs for Selected Models */}
-                        <div className="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                        <div className="space-y-3 mb-6 max-h-[280px] overflow-y-auto pr-2 no-scrollbar">
                             <AnimatePresence>
                                 {selectedModels.map(id => (
                                     <motion.div
@@ -102,23 +103,23 @@ export function ModelSetupModal({ isOpen, onClose }: { isOpen: boolean; onClose:
                                         exit={{ opacity: 0, height: 0 }}
                                         className="overflow-hidden"
                                     >
-                                        <div className="bg-black/20 rounded-lg p-4 border border-white/5">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <label className="text-xs font-mono text-neon-cyan uppercase tracking-wider">{MODEL_CONFIGS[id].name} API KEY</label>
+                                        <div className="bg-foreground/5 rounded-lg p-3 border border-border/50">
+                                            <div className="flex justify-between items-center mb-1.5">
+                                                <label className="text-[10px] font-semibold text-foreground uppercase tracking-wider">{MODEL_CONFIGS[id].name} API KEY</label>
                                                 {apiKeys[id] && validateApiKey(id, apiKeys[id]!) && (
-                                                    <span className="flex items-center gap-1 text-[10px] text-green-400">
+                                                    <span className="flex items-center gap-1 text-[10px] text-green-500 font-medium">
                                                         <Check className="w-3 h-3" /> VERIFIED
                                                     </span>
                                                 )}
                                             </div>
                                             <div className="relative">
-                                                <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                                                <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-canvas-subtext" />
                                                 <input
                                                     type="password"
                                                     value={apiKeys[id] || ''}
                                                     onChange={(e) => setApiKey(id, e.target.value)}
                                                     placeholder={`Paste ${MODEL_CONFIGS[id].name} Key...`}
-                                                    className="w-full bg-black/40 border border-white/10 rounded-md py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-neon-cyan/50 transition-colors font-mono"
+                                                    className="w-full bg-surface border border-border rounded-md py-2 pl-9 pr-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-system-blue/20 focus:border-system-blue transition-all font-mono placeholder:text-canvas-subtext/50"
                                                 />
                                             </div>
                                         </div>
@@ -126,13 +127,13 @@ export function ModelSetupModal({ isOpen, onClose }: { isOpen: boolean; onClose:
                                 ))}
                             </AnimatePresence>
                             {selectedModels.length === 0 && (
-                                <div className="text-center py-8 text-gray-500 italic">Select at least one model to configure.</div>
+                                <div className="text-center py-6 text-canvas-subtext text-sm">Select a model above to begin configuration.</div>
                             )}
                         </div>
 
                         {/* Footer / Error */}
                         {error && (
-                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-4 text-xs text-red-500 font-medium flex items-center gap-2 bg-red-500/5 border border-red-500/10 p-3 rounded-xl">
+                            <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="mb-4 text-xs text-red-500 font-medium flex items-center gap-2 bg-red-500/10 border border-red-500/20 p-2.5 rounded-lg">
                                 <AlertCircle className="w-4 h-4" />
                                 {error}
                             </motion.div>
@@ -141,7 +142,7 @@ export function ModelSetupModal({ isOpen, onClose }: { isOpen: boolean; onClose:
                         <button
                             onClick={handleLaunch}
                             disabled={selectedModels.length === 0}
-                            className="w-full py-4 bg-white text-black font-medium tracking-wide hover:bg-gray-100 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-lg shadow-white/5"
+                            className="w-full py-3.5 bg-foreground text-background font-medium text-sm tracking-wide hover:bg-foreground/90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-lg shadow-black/5"
                         >
                             Launch Workstation
                         </button>

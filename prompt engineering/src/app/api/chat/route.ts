@@ -3,10 +3,11 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { z } from 'zod';
+import { logInteraction } from '@/lib/logger';
 
-export const runtime = 'edge';
+// Remove Edge Runtime to support SQLite logging
+// export const runtime = 'edge';
 
-// Simple validation schema
 const RequestSchema = z.object({
     messages: z.array(z.object({
         role: z.enum(['user', 'assistant', 'system']),
@@ -17,55 +18,88 @@ const RequestSchema = z.object({
 });
 
 export async function POST(req: Request) {
+    let modelId = 'unknown';
+    let providerName = 'unknown';
+    let promptLen = 0;
+
     try {
-        const { messages, model, apiKey } = await req.json();
+        const body = await req.json();
+        const { messages, model, apiKey } = RequestSchema.parse(body);
 
-        // Validate Input
-        const payload = RequestSchema.parse({ messages, model, apiKey });
+        modelId = model;
+        promptLen = messages.reduce((acc, m) => acc + m.content.length, 0);
 
-        // Choose Provider Logic
+        // --- Provider Logic ---
         let modelInstance;
 
-        // Determine Provider based on Model ID Pattern
-        const modelId = payload.model;
-
-        if (modelId.startsWith('gemini')) {
-            const google = payload.apiKey ? createGoogleGenerativeAI({ apiKey: payload.apiKey }) : createGoogleGenerativeAI();
-            // Pass the exact model ID to the provider
-            modelInstance = google(modelId);
+        if (model.startsWith('gemini')) {
+            providerName = 'gemini';
+            const google = apiKey ? createGoogleGenerativeAI({ apiKey }) : createGoogleGenerativeAI();
+            modelInstance = google(model);
         }
-        else if (modelId.startsWith('gpt') || modelId.startsWith('o3')) {
-            const openai = payload.apiKey ? createOpenAI({ apiKey: payload.apiKey }) : createOpenAI();
-            modelInstance = openai(modelId);
+        else if (model.startsWith('gpt') || model.startsWith('o')) { // o1, o3, etc
+            providerName = 'openai';
+            const openai = apiKey ? createOpenAI({ apiKey }) : createOpenAI();
+            modelInstance = openai(model);
         }
-        else if (modelId.startsWith('claude')) {
-            const anthropic = payload.apiKey ? createAnthropic({ apiKey: payload.apiKey }) : createAnthropic();
-            // Anthropic SDK expects specific model naming, usually matches our IDs but checking:
-            // Our IDs: claude-opus-4-20250514 -> SDK might need 'claude-3-opus-20240229' etc.
-            // Assumption: The IDs in the CSV are the correct API IDs as requested by user.
-            modelInstance = anthropic(modelId);
+        else if (model.startsWith('claude')) {
+            providerName = 'claude';
+            const anthropic = apiKey ? createAnthropic({ apiKey }) : createAnthropic();
+            modelInstance = anthropic(model);
         }
-        else if (modelId.startsWith('llama')) {
-            // Mocking Meta/Llama support via OpenAI compatible endpoint or similar if needed? 
-            // limitless-ai or similar provider usually. For now, we return error if no provider set up.
-            // Assuming OpenAI compatible for "Open Weight Frontier" or just custom logic.
-            // For this exercise, I will throw as it wasn't in original imports.
-            return new Response('Meta Llama models not yet configured for inference backend', { status: 501 });
+        else if (model.startsWith('llama')) {
+            providerName = 'meta';
+            // Assuming use of a provider like Groq or generic OpenAI-compatible endpoint for Llama
+            // For now, if no key/setup, error out.
+            // If using Groq:
+            if (apiKey) {
+                 const openaiCompatible = createOpenAI({
+                     baseURL: 'https://api.groq.com/openai/v1',
+                     apiKey
+                 });
+                 modelInstance = openaiCompatible(model);
+            } else {
+                 throw new Error("Meta/Llama models require a compatible API Key (e.g., Groq)");
+            }
         }
         else {
-            return new Response('Invalid model provider/ID', { status: 400 });
+            throw new Error('Invalid model provider/ID');
         }
 
         const result = await streamText({
             model: modelInstance,
-            messages: payload.messages,
-            system: "You are a helpful, precision-focused AI coding assistant. Be concise and accurate."
+            messages,
+            system: "You are a helpful, precision-focused AI coding assistant. Be concise and accurate. Output clean markdown.",
+            onFinish: (completion) => {
+                // Async Log to SQLite
+                logInteraction({
+                    provider: providerName,
+                    model: modelId,
+                    promptLength: promptLen,
+                    responseLength: completion.text.length,
+                    status: 'success'
+                });
+            }
         });
 
         return result.toTextStreamResponse();
 
     } catch (error) {
         console.error("API Error:", error);
-        return new Response(JSON.stringify({ error: 'Check API Key or Quota' }), { status: 500 });
+
+        // Log Error
+        logInteraction({
+            provider: providerName,
+            model: modelId,
+            promptLength: promptLen,
+            responseLength: 0,
+            status: 'error'
+        });
+
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+        return new Response(JSON.stringify({
+            error: errorMessage || 'An error occurred during inference check API keys.'
+        }), { status: 500 });
     }
 }
