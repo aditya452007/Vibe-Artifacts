@@ -15,6 +15,18 @@ A collection of high-performance digital artifacts, featuring modern web technol
 
 ---
 
+### 🛡️ [FinePrint](./FinePrint)
+
+**Secure Contract Intelligence.**
+*   **Audit** Terms of Service and Contracts instantly.
+*   **Detect** high-risk clauses (data selling, waivers).
+*   **Verdict**: Get a clear "Accept" or "Refuse" recommendation.
+*   **Privacy-First**: Bring Your Own Key (BYOK) architecture.
+
+👉 [**Go to FinePrint Documentation**](./FinePrint/README.md) to get started.
+
+---
+
 ### 📝 [Prompt Engineering](./prompt engineering)
 
 A working prototype for prompt engineering documentation.
