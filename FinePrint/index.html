@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinePrint — Secure Auditing</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <!-- SECTION 1: CHOICE SCREEN (New Entry) -->
+        <section id="choice-screen" class="active">
+            <div class="logo-area">
+                <div class="header-row">
+                    <div class="shield-lock-icon"></div>
+                    <button class="icon-button" id="configBtn" title="Settings">⚙️</button>
+                </div>
+                <h1>FinePrint</h1>
+                <p class="subtitle">Secure Contract Intelligence</p>
+            </div>
+
+            <div class="card-choice-container">
+                <button class="choice-card" onclick="startFlow('url')">
+                    <span class="icon">🔗</span>
+                    <span class="label">Audit URL</span>
+                </button>
+                <button class="choice-card" onclick="startFlow('text')">
+                    <span class="icon">📄</span>
+                    <span class="label">Paste Text</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 2A: URL INPUT -->
+        <section id="url-input-screen">
+            <h2>Audit Public URL</h2>
+            <div class="input-group">
+                <input type="url" id="urlInput" placeholder="https://example.com/terms">
+            </div>
+            <div class="action-row">
+                <button class="ghost-button" onclick="goBack()">Back</button>
+                <button class="primary-button" id="scanUrlBtn">Verify Safe Link</button>
+            </div>
+        </section>
+
+        <!-- SECTION 2B: TEXT INPUT -->
+        <section id="text-input-screen">
+            <h2>Audit Raw Text</h2>
+            <div class="input-group">
+                <textarea id="textInput" placeholder="Paste legal text securely here..."></textarea>
+            </div>
+            <div class="action-row">
+                <button class="ghost-button" onclick="goBack()">Back</button>
+                <button class="primary-button" id="scanTextBtn">Scan Protocol</button>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ANALYSIS STATE -->
+        <section id="analysis">
+            <div class="loader-ring"></div>
+            <p class="status-text">Verifying legal integrity...</p>
+        </section>
+
+        <!-- SECTION 4: ERROR STATE (Graceful Fallback) -->
+        <section id="error-state">
+            <div class="logo-area">
+                <div class="shield-lock-icon"
+                    style="background: var(--warning); filter: drop-shadow(0 0 10px var(--warning))"></div>
+                <h2>Unable to Fetch URL</h2>
+                <p class="subtitle" id="errorMessage">We couldn't read that website directly.</p>
+            </div>
+            <div class="action-row" style="flex-direction: column; gap: 1.5rem;">
+                <p style="text-align: center; font-size: 0.95rem; opacity: 0.8;">
+                    Unable to fetch the error content. Please copy the data from the website and paste it into the text
+                    area.
+                </p>
+                <div class="action-row">
+                    <button class="ghost-button" onclick="startFlow('url')">Retry URL</button>
+                    <button class="primary-button" onclick="startFlow('text')">Paste Text Instead</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: RESULTS CARD -->
+        <section id="results">
+            <div class="verdict-card">
+                <div class="card-content">
+
+                    <!-- New Verdict Header -->
+                    <div class="final-verdict-area" id="finalVerdictArea">
+                        <!-- JS Injected: "REFUSE" or "ACCEPT" stamp -->
+                    </div>
+
+                    <div class="summary-box">
+                        <p id="verdictSummary"></p>
+                    </div>
+
+                    <!-- Tri-Level Risks -->
+                    <div class="risk-section high-risk" id="highRiskContainer">
+                        <h3>Critical Risks</h3>
+                        <div class="list"></div>
+                    </div>
+
+                    <div class="risk-section med-risk" id="medRiskContainer">
+                        <h3>Concerns</h3>
+                        <div class="list"></div>
+                    </div>
+
+                    <div class="risk-section low-risk" id="lowRiskContainer">
+                        <h3>Good / Neutral</h3>
+                        <div class="list"></div>
+                    </div>
+                </div>
+
+                <button id="resetButton" class="secondary-button">Start New Audit</button>
+            </div>
+        </section>
+
+        <!-- Configuration Modal -->
+        <div id="configModal" class="modal-overlay">
+            <div class="modal-content">
+                <h2>AI Configuration</h2>
+                <div class="input-group">
+                    <label>AI Model Provider</label>
+                    <select id="modelProvider">
+                        <option value="gemini">Google Gemini 2.5 Flash</option>
+                        <option value="openai">OpenAI GPT-5.2</option>
+                        <option value="anthropic">Claude 4.0 Sonnet</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>API Key</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="apiKeyInput" placeholder="sk-..." autocomplete="off">
+                    </div>
+                    <p class="subtitle" style="font-size: 0.8rem; margin-top: 0.5rem;">
+                        Keys are stored locally in your browser.
+                    </p>
+                </div>
+                <div class="action-row">
+                    <button class="ghost-button" id="cancelConfigBtn">Cancel</button>
+                    <button class="primary-button" id="saveConfigBtn">Save Configuration</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Zero logs. Zero tracking. Audited locally.</p>
+    </footer>
+
+    <script src="script.js?v=2"></script>
+</body>
+
+</html>
