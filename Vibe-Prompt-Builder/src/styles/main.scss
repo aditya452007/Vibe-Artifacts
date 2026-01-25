@@ -1,0 +1,85 @@
+@use "sass:map";
+
+/* Variables & Design Tokens */
+:root {
+  /* Nuetral Palette */
+  --color-bg-light: #F0F0F3;
+  --color-bg-dark: #1E1E1E;
+  
+  /* Primary Gradient */
+  --color-primary-start: #667EEA;
+  --color-primary-end: #764BA2;
+  
+  /* Secondary Gradient */
+  --color-secondary-start: #F093FB;
+  --color-secondary-end: #F5576C;
+
+  /* Text Colors */
+  --color-text-main: #1A1A1A;
+  --color-text-muted: #666666;
+  --color-text-inverted: #FFFFFF;
+
+  /* Shadows */
+  --shadow-neumorphic-light: 8px 8px 16px #D1D9E6, -8px -8px 16px #FFFFFF;
+  --shadow-neumorphic-dark: 5px 5px 10px #151515, -5px -5px 10px #272727;
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+  --glass-blur: blur(10px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-current: var(--color-bg-dark);
+    --color-text-current: var(--color-text-inverted);
+    --shadow-current: var(--shadow-neumorphic-dark);
+    --glass-bg: rgba(30, 30, 30, 0.7);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg-current: var(--color-bg-light);
+    --color-text-current: var(--color-text-main);
+    --shadow-current: var(--shadow-neumorphic-light);
+  }
+}
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: var(--color-bg-current);
+  color: var(--color-text-current);
+  font-size: 16px;
+  width: 400px; /* Default popup width */
+  height: 600px; /* Default popup height */
+  overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 12px;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
