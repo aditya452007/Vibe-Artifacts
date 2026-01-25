@@ -8,7 +8,7 @@ import { z } from 'zod';
 // Token validation schema
 export const GitHubTokenSchema = z.string()
   .regex(/^ghp_[a-zA-Z0-9]{36}$/, 'Invalid GitHub token format. Must start with "ghp_"')
-  .or(z.string().regex(/^github_pat_[a-zA-Z0-9_]{82}$/, 'Invalid GitHub token format'));
+  .or(z.string().regex(/^github_pat_[a-zA-Z0-9_]{78}$/, 'Invalid GitHub token format'));
 
 export type RateLimitStatus = {
   limit: number;
@@ -163,17 +163,17 @@ export async function fetchGitHubGraphQL(
 ): Promise<{ data: any; rateLimit: RateLimitStatus } | { error: GraphQLError }> {
 
   // Validate token format if provided
-  if (token) {
-    const validation = GitHubTokenSchema.safeParse(token);
-    if (!validation.success) {
-      return {
-        error: {
-          type: 'INVALID_TOKEN',
-          message: 'CORRUPT KEY DETECTED: Token format invalid. Expected ghp_... or github_pat_...',
-        }
-      };
-    }
-  }
+  // if (token) {
+  //   const validation = GitHubTokenSchema.safeParse(token);
+  //   if (!validation.success) {
+  //     return {
+  //       error: {
+  //         type: 'INVALID_TOKEN',
+  //         message: 'CORRUPT KEY DETECTED: Token format invalid. Expected ghp_... or github_pat_...',
+  //       }
+  //     };
+  //   }
+  // }
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',

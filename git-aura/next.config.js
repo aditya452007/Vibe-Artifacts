@@ -3,6 +3,9 @@ const nextConfig = {
     compress: true,
     experimental: {
         optimizePackageImports: ['framer-motion', 'lucide-react', 'recharts', 'date-fns'],
+        serverActions: {
+            allowedOrigins: ['*'],
+        },
     },
 
     async headers() {
