@@ -109,5 +109,5 @@ We welcome fellow Vibe creators! Please read our [CONTRIBUTING.md](../CONTRIBUTI
 ---
 
 <p align="center">
-  Built with ❤️ and 🤖 by Aditya
+  Built with ❤️ and 🤖 by Aaditya
 </p>
