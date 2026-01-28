@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* GSAP Mask Animation Utilities */
+@layer utilities {
+  .masked-img {
+    mask-image: url('/images/mask.jpg');
+    mask-repeat: no-repeat;
+    mask-position: center center;
+    mask-size: 50%;
+    -webkit-mask-image: url('/images/mask.png');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center center;
+    -webkit-mask-size: 50%;
+  }
+}
+
+.will-fade {
+  opacity: 1;
+}
