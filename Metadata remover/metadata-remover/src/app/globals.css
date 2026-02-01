@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ring: var(--ring);
+
+  --color-text-secondary: var(--text-secondary);
+  --color-success: var(--success);
+  --color-surface: var(--surface);
+
+  --radius: var(--radius);
+}
+
+:root {
+  /* Light Mode - "Clean Paper & Gold" */
+  --primary: #0a0a0a;
+  /* True Black - Sharp contrast */
+  --primary-foreground: #fafafa;
+  /* White text */
+
+  --accent: #d4af37;
+  /* Metallic Gold - Premium standout */
+  --accent-foreground: #0a0a0a;
+
+  --background: #fafafa;
+  /* Crisp Off-White */
+  --foreground: #0a0a0a;
+  /* True Black */
+
+  --secondary: #f4f4f5;
+  /* Zinc 100 - Neutral Light Grey */
+  --secondary-foreground: #0a0a0a;
+
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  /* Neutral Zinc */
+
+  --border: #e4e4e7;
+  /* Zinc 200 */
+  --input: #e4e4e7;
+
+  --text-secondary: #52525b;
+  /* Zinc 600 */
+  --success: #10b981;
+  /* Emerald */
+  --destructive: #ef4444;
+  /* Clean Red */
+  --destructive-foreground: #fafafa;
+
+  --surface: #ffffff;
+  /* Clean White surface */
+
+  --radius: 0.5rem;
+  /* Sharper, more modern radius */
+
+  --ring: #0a0a0a;
+}
+
+.dark {
+  /* Dark Mode - "True Luxury Midnight" */
+  --primary: #d4af37;
+  /* Gold - Main actions pop */
+  --primary-foreground: #000000;
+  /* Black text on Gold */
+
+  --accent: #d4af37;
+  /* Consistent Gold */
+  --accent-foreground: #000000;
+
+  --background: #000000;
+  /* True Black - No blue/purple tint */
+  --foreground: #fafafa;
+  /* White text */
+
+  --secondary: #18181b;
+  /* Zinc 900 */
+  --secondary-foreground: #fafafa;
+
+  --card: #0a0a0a;
+  /* Very dark grey, almost black */
+  --card-foreground: #fafafa;
+
+  --popover: #0a0a0a;
+  --popover-foreground: #fafafa;
+
+  --muted: #27272a;
+  /* Zinc 800 */
+  --muted-foreground: #a1a1aa;
+  /* Zinc 400 */
+
+  --border: #27272a;
+  --input: #27272a;
+
+  --text-secondary: #a1a1aa;
+  --success: #34d399;
+  --destructive: #f87171;
+  --destructive-foreground: #fafafa;
+
+  --surface: #0a0a0a;
+
+  --ring: #d4af37;
+}
+
+/* Base styles */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Scroll smoothing for Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

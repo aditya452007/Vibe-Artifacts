@@ -1,0 +1,22 @@
+/* TextType.css */
+.text-type {
+    display: inline-block;
+    white-space: pre-wrap;
+    position: relative;
+}
+
+.text-type__content {
+    display: inline;
+}
+
+.text-type__cursor {
+    display: inline-block;
+    margin-left: 2px;
+    font-weight: 400;
+    opacity: 1;
+    vertical-align: text-bottom;
+}
+
+.text-type__cursor--hidden {
+    display: none;
+}
