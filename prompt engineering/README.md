@@ -1,5 +1,7 @@
 # Prompt Engineering Architecture
 
+[← Back to Vibe Artifacts](../README.md)
+
 Welcome to the definitive knowledge base for **Prompt Engineering**. This documentation is designed to guide you from foundational concepts to advanced cognitive architectures.
 
 ## Core Curriculum
