@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Time Manager - Productive Flow</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#FFFDF2", // Creamy warm white
+                        surface: "#FFFFFF",    // Pure white for cards
+                        primary: "#e1096b",    // Vibrant Pink
+                        secondary: "#2D1B24",  // Deep Charcoal (Text)
+                        muted: "#64748B",      // Cool Gray (Secondary Text)
+                        accent: "#1152d4",     // Deep Blue (Sub-accent)
+                    },
+                    fontFamily: {
+                        sans: ["Plus Jakarta Sans", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                    boxShadow: {
+                        'premium': '0 20px 40px -10px rgba(225, 9, 107, 0.15)',
+                        'glass': '0 8px 30px rgba(0, 0, 0, 0.04)',
+                        'inner-glow': 'inset 0 0 20px rgba(225, 9, 107, 0.05)',
+                    },
+                    backgroundImage: {
+                        'mesh': 'radial-gradient(at 0% 0%, hsla(339, 92%, 46%, 0.03) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(210, 100%, 80%, 0.1) 0, transparent 50%), radial-gradient(at 100% 100%, hsla(339, 92%, 46%, 0.03) 0, transparent 50%)',
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FFFDF2;
+            color: #2D1B24;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #e1096b 0%, #1152d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Removed glitchy grain text, kept subtle noise filter */
+        .grain-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: multiply;
+        }
+
+        .reveal-up {
+            animation: revealUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes revealUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-mesh min-h-screen selection:bg-primary/20 selection:text-primary">
+
+    <div class="grain-overlay"></div>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 w-full z-40 transition-all duration-300 bg-background/80 backdrop-blur-md border-b border-secondary/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="size-10 rounded-xl bg-white shadow-sm border border-secondary/5 flex items-center justify-center text-primary transform hover:scale-105 transition-transform">
+                    <!-- Timer Icon SVG -->
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </div>
+                <span class="font-heading font-bold text-lg tracking-tight text-secondary">TimeManager</span>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <a href="Dist/TimeManager.zip" download
+                    class="hidden sm:flex items-center gap-2 bg-secondary text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-secondary/10 hover:shadow-xl hover:-translate-y-0.5 transition-all">
+                    <!-- Download Icon SVG -->
+                    <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                    </svg>
+                    <span>Download ZIP</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="relative pt-40 pb-20 overflow-hidden">
+
+        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+            <h1
+                class="text-6xl md:text-8xl font-extrabold tracking-tight mb-8 leading-[1] text-secondary reveal-up delay-100">
+                Master your <br>
+                <span class="text-gradient">creative flow.</span>
+            </h1>
+
+            <p class="text-xl text-muted max-w-2xl mx-auto mb-12 leading-relaxed font-body reveal-up delay-200">
+                Intelligent, local-first time tracking for Windows. <br>
+                Reclaim your focus hours without sacrificing privacy.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-5 reveal-up delay-200">
+                <a href="Dist/TimeManager.zip" download
+                    class="group relative h-14 pl-8 pr-10 rounded-2xl bg-primary text-white font-bold text-lg shadow-premium hover:shadow-xl hover:scale-105 transition-all flex items-center gap-3 overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    </div>
+                    <!-- Windows Icon SVG -->
+                    <svg class="size-6 relative z-10" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M0 3.449L9.75 2.1v9.451H0V3.449zm10.949-1.328L24 0v11.551H10.949V2.121zM0 12.45h9.75v9.451L0 20.55V12.45zm10.949 0H24v11.551l-13.051-2.12V12.45z" />
+                    </svg>
+                    <span class="relative z-10">Download ZIP (Windows)</span>
+                </a>
+
+                <div class="flex items-center gap-2 px-4 text-sm font-medium text-muted">
+                    <svg class="size-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9Z" />
+                    </svg>
+                    <span>Free for Personal Use</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3D Isometric App Preview -->
+        <div class="mt-24 max-w-6xl mx-auto px-6 reveal-up delay-200 perspective-1000">
+            <!-- Glow Effect behind container -->
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[60%] bg-gradient-to-tr from-primary/20 to-accent/20 blur-[100px] -z-10 rounded-full opacity-60">
+            </div>
+
+            <div
+                class="relative bg-white/80 border border-white/60 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden aspect-[16/10] transform rotate-x-12 transition-transform duration-700 hover:rotate-x-0 hover:scale-[1.02]">
+                <!-- Custom Window Titlebar -->
+                <div class="h-10 border-b border-black/5 bg-white/50 flex items-center px-4 gap-2">
+                    <span class="text-[10px] uppercase font-bold text-muted/50 tracking-widest ml-auto">Time
+                        Manager</span>
+                </div>
+
+                <!-- Internal UI Mockup -->
+                <div class="p-8 grid grid-cols-12 gap-8 h-full">
+                    <!-- Nav Sidebar -->
+                    <div class="col-span-3 space-y-6 border-r border-black/5 pr-6">
+                        <div class="space-y-2">
+                            <div
+                                class="flex items-center gap-3 p-2 bg-primary/5 text-primary rounded-lg font-bold text-sm">
+                                <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                                </svg>
+                                Overview
+                            </div>
+                            <div
+                                class="flex items-center gap-3 p-2 text-muted hover:bg-black/5 rounded-lg font-medium text-sm transition-colors">
+                                <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                                </svg>
+                                Analytics
+                            </div>
+                        </div>
+
+                        <div class="mt-auto pt-10">
+                            <div class="p-4 rounded-xl bg-gradient-to-br from-primary to-accent text-white shadow-lg">
+                                <p class="text-xs font-bold opacity-80 uppercase mb-1">Weekly Goal</p>
+                                <p class="text-2xl font-bold">32.5h</p>
+                                <div class="w-full bg-white/20 h-1.5 rounded-full mt-2">
+                                    <div
+                                        class="bg-white h-full w-[80%] rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Dashboard -->
+                    <div class="col-span-9 flex flex-col">
+                        <div class="flex justify-between items-end mb-8">
+                            <div>
+                                <h2 class="text-3xl font-bold text-secondary mb-1">Focus Session</h2>
+                                <p class="text-sm text-muted">Tracking active usage patterns</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="flex size-3 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></span>
+                                <span class="text-sm font-bold text-secondary">Active</span>
+                            </div>
+                        </div>
+
+                        <!-- Big Chart Area -->
+                        <div
+                            class="flex-1 bg-white border border-black/5 rounded-xl p-6 shadow-md relative overflow-hidden">
+                            <!-- Grid Lines -->
+                            <div class="absolute inset-0 grid grid-cols-6 grid-rows-4 opacity-5 pointer-events-none">
+                                <div class="border-r border-black"></div>
+                                <div class="border-r border-black"></div>
+                                <div class="border-r border-black"></div>
+                                <div class="border-r border-black"></div>
+                                <div class="border-r border-black"></div>
+                            </div>
+
+                            <!-- Bars -->
+                            <div class="flex items-end justify-between h-full gap-4 relative z-10 px-4 pb-2">
+                                <div
+                                    class="w-full bg-gray-100 rounded-t-lg h-[40%] group hover:bg-primary/20 transition-colors relative">
+                                    <div
+                                        class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                        4h</div>
+                                </div>
+                                <div
+                                    class="w-full bg-gray-100 rounded-t-lg h-[65%] group hover:bg-primary/20 transition-colors relative">
+                                    <div
+                                        class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                        6.5h</div>
+                                </div>
+                                <div
+                                    class="w-full bg-primary shadow-[0_0_20px_rgba(225,9,107,0.3)] rounded-t-lg h-[85%] relative group">
+                                    <div
+                                        class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold text-primary opacity-100 transition-opacity">
+                                        8.5h</div>
+                                </div>
+                                <div
+                                    class="w-full bg-gray-100 rounded-t-lg h-[50%] group hover:bg-primary/20 transition-colors">
+                                </div>
+                                <div
+                                    class="w-full bg-gray-100 rounded-t-lg h-[30%] group hover:bg-primary/20 transition-colors">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bento Grid Features -->
+    <section class="py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-16 text-secondary">Engineered for <span
+                    class="text-primary italic">Perfection</span>.</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Large Card -->
+                <div
+                    class="md:col-span-2 glass-panel p-8 rounded-3xl relative overflow-hidden group hover:shadow-premium transition-all duration-500">
+                    <!-- Removed glitchy background icon -->
+
+                    <div class="relative z-10">
+                        <div
+                            class="size-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 shadow-inner">
+                            <!-- Auto fix Icon -->
+                            <svg class="size-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-secondary">Zero-Touch Tracking</h3>
+                        <p class="text-muted leading-relaxed max-w-md">
+                            Forget manual timers. Our intelligent daemon monitors active window focus events,
+                            distinguishing between work and distraction automatically.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tall Card -->
+                <div
+                    class="md:row-span-2 glass-panel p-8 rounded-3xl flex flex-col justify-between group hover:shadow-premium transition-all duration-500">
+                    <div>
+                        <div class="size-14 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mb-6">
+                            <!-- Lock Icon -->
+                            <svg class="size-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0V10.5m-1.5 0h12a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5h-12a1.5 1.5 0 0 1-1.5-1.5v-9a1.5 1.5 0 0 1 1.5-1.5Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-secondary">Local Encryption</h3>
+                        <p class="text-muted leading-relaxed">
+                            Your productivity data is nobody's business but yours. We use SQLite with AES-256
+                            encryption, stored strictly on your local disk.
+                        </p>
+                    </div>
+                    <div
+                        class="mt-8 p-4 bg-white/50 rounded-xl border border-white max-w-[200px] mx-auto opacity-80 shadow-sm text-center">
+                        <svg class="size-8 text-green-500 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                        </svg>
+                        <p class="text-xs font-bold text-secondary uppercase">100% Offline</p>
+                    </div>
+                </div>
+
+                <!-- Wide Card Bottom -->
+                <div
+                    class="md:col-span-2 glass-panel p-8 rounded-3xl flex items-center justify-between gap-8 group hover:shadow-premium transition-all duration-500">
+                    <div class="max-w-sm">
+                        <h3 class="text-2xl font-bold mb-3 text-secondary">Native Performance</h3>
+                        <p class="text-muted text-sm leading-relaxed">
+                            Written in Rust. Consumes < 0.1% CPU and ~25MB RAM. You won't feel it running. </p>
+                    </div>
+                    <div class="flex gap-1 h-16 items-end">
+                        <div class="w-3 bg-secondary/10 rounded-full h-[40%]"></div>
+                        <div class="w-3 bg-secondary/20 rounded-full h-[60%]"></div>
+                        <div class="w-3 bg-primary rounded-full h-[80%] shadow-[0_0_15px_#e1096b]"></div>
+                        <div class="w-3 bg-secondary/10 rounded-full h-[50%]"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Minimal Footer -->
+    <footer class="border-t border-black/5 bg-white/40 backdrop-blur-sm mt-10">
+        <div class="max-w-5xl mx-auto px-6 py-20 text-center">
+
+            <h2 class="text-2xl font-bold text-secondary mb-8">Ready to reclaim your time?</h2>
+
+            <a href="Dist/TimeManager.zip" download
+                class="inline-flex items-center gap-3 bg-secondary text-white px-8 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all">
+                <!-- Download SVG -->
+                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                <span>Download Latest ZIP</span>
+            </a>
+
+            <p class="mt-12 text-xs text-muted font-medium">
+                © 2026 Time Manager Inc. <span class="mx-2">•</span> Windows 10 & 11 Supported <span
+                    class="mx-2">•</span> Secure Local Storage
+            </p>
+
+        </div>
+    </footer>
+
+</body>
+
+</html>

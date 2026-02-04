@@ -1,0 +1,13 @@
+# Ignore desktop binaries
+*.exe
+*.msi
+*.dmg
+*.AppImage
+
+# Ignore unpacked build folders
+dist/*
+!dist/TimeManager.zip
+
+# OS junk
+node_modules
+.DS_Store
