@@ -3,6 +3,8 @@
 > **A Cyberpunk Developer Analytics Dashboard**
 > *Visualize your GitHub activity with style, motion, and code.*
 
+[← Back to Vibe Artifacts](../README.md)
+
 ![Git-Aura Banner](https://placehold.co/1200x400/000000/00ffff?text=Git-Aura+Analytics)
 
 Git-Aura is a high-performance, visually stunning dashboard that turns your GitHub profile into a cinematic experience. Built with **Next.js 16**, **Tailwind CSS**, and **Framer Motion**, it provides deep insights into your coding habits, presented with a "Vibe Coding" aesthetic.

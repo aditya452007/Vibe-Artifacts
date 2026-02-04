@@ -1,58 +1,81 @@
-# Vibe-Artifacts
+# Vibe Artifacts 🌌
 
-A collection of high-performance digital artifacts, featuring modern web technologies and creative coding projects.
+> **A curated collection of high-performance digital artifacts.**
+> *Where modern web technologies meet creative coding and aesthetic design.*
 
-## 📂 Projects
+![Vibe Artifacts Banner](https://placehold.co/1200x400/0f172a/38bdf8?text=Vibe+Artifacts+Collection)
 
-### 🔮 [Git-Aura](./git-aura)
-
-**The Main Event.** A Cyberpunk Developer Analytics Dashboard built with Next.js 16.
-*   **Visualize** your GitHub activity.
-*   **Analyze** your coding velocity and habits.
-*   **Experience** a cinematic, motion-rich interface.
-
-👉 [**Go to Git-Aura Documentation**](./git-aura/README.md) to get started.
+Welcome to **Vibe Artifacts**. This repository is a monorepo containing a diverse suite of premium applications, tools, and knowledge bases. Each project is crafted with a focus on **User Experience (UX)**, **Privacy**, and **Performance**.
 
 ---
 
-### 🛡️ [FinePrint](./FinePrint)
+## 📂 Repository Hierarchy
 
-**Secure Contract Intelligence.**
-*   **Audit** Terms of Service and Contracts instantly.
-*   **Detect** high-risk clauses (data selling, waivers).
-*   **Verdict**: Get a clear "Accept" or "Refuse" recommendation.
-*   **Privacy-First**: Bring Your Own Key (BYOK) architecture.
+Explore the collection through this structured overview. Click on any project to dive into its documentation.
 
-👉 [**Go to FinePrint Documentation**](./FinePrint/README.md) to get started.
+```mermaid
+graph TD;
+    A[Vibe Artifacts] --> B[Flagship Artifacts];
+    A --> C[Creative Tools];
+    A --> D[Knowledge & Templates];
 
----
+    B --> B1[🔮 Git-Aura];
+    B --> B2[🛡️ FinePrint];
+    B --> B3[⏳ Time Manager];
 
-### 📝 [Prompt Engineering](./prompt engineering)
+    C --> C1[✨ Prompt Builder];
+    C --> C2[🛡️ Metadata Remover];
 
-A working prototype for prompt engineering documentation.
-
-> [!WARNING]
-> **Status**: This project is currently **not maintained correctly** and contains **bugs**.
->
-> This is a working prototype, not a production-level ready application. The prompt docs are currently small.
-
-**Contributions are welcome!** Help is needed to improve the project and solve bugs.
+    D --> D1[📝 Prompt Eng.];
+    D --> D2[🍽️ Restaurant Tmpl];
+```
 
 ---
 
-## 🛠️ Repository Structure
+## 💎 The Collection
 
-This repository is organized as a collection of projects. Currently, it houses:
+### 🚀 Flagship Artifacts
+*Production-ready applications with deep functionality.*
 
-*   **git-aura/**: The source code for the analytics dashboard.
+| Artifact | Description | Tech Stack |
+| :--- | :--- | :--- |
+| [**Git-Aura**](./git-aura/README.md) | **Cyberpunk Developer Analytics.** Visualize your GitHub activity with cinematic motion and deep insights. | Next.js 16, Motion, Tailwind |
+| [**FinePrint**](./FinePrint/README.md) | **Secure Contract Intelligence.** AI-powered contract analysis to detect hidden risks and clauses. | Python (Flask), AI (Gemini/GPT) |
+| [**Time Manager**](./Desktop-Time-Manager/README.md) | **Productive Flow.** A native Windows desktop app for distraction-free time tracking. | Rust, SQLite, Windows Native |
+
+### 🛠️ Creative Tools & Privacy
+*Utilities designed to enhance your workflow and protect your data.*
+
+| Artifact | Description | Tech Stack |
+| :--- | :--- | :--- |
+| [**Vibe Prompt Builder**](./Vibe-Prompt-Builder/README.md) | **Next-Gen Prompt Engineering.** A browser extension to craft perfect AI prompts using "Vibe Personalities". | React, TypeScript, Chrome Ext |
+| [**Metadata Remover**](./Metadata%20remover/README.md) | **Image Privacy Shield.** Strip invisible EXIF data (GPS, Device info) from your photos before sharing. | HTML5, JS, Client-Side |
+
+### 📚 Knowledge & Templates
+*Resources to learn and build.*
+
+| Artifact | Description | Tech Stack |
+| :--- | :--- | :--- |
+| [**Prompt Engineering**](./prompt%20engineering/README.md) | **The Knowledge Base.** A comprehensive guide to advanced prompting architectures (CoT, ToT, RAG). | Next.js, Markdown |
+| [**Restaurant Template**](./Restraunt_Template/README.md) | **Premium Web Template.** A buttery-smooth, animated website template for high-end dining. | React, Vite, GSAP |
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please check the specific project directories for contribution guidelines (e.g., [`git-aura/CONTRIBUTING.md`](./git-aura/CONTRIBUTING.md)).
+We believe in open-source collaboration. Whether you're fixing a bug, adding a feature, or improving documentation, your contributions are welcome.
+
+1.  Check the specific project's `README.md` for local setup instructions.
+2.  Fork the repository.
+3.  Create a feature branch.
+4.  Submit a Pull Request.
 
 ## 📄 License
 
-Each project may have its own license. Please check the respective project folders.
+Individual projects may operate under different licenses. Please refer to the specific project folder for details. Generally, this collection is open for personal and educational use.
 
 ---
-*Maintained by [aditya452007](https://github.com/aditya452007)*
+
+<p align="center">
+  Maintained with ❤️ by <a href="https://github.com/aditya452007">aditya452007</a>
+</p>

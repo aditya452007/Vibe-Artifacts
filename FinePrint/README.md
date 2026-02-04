@@ -6,6 +6,8 @@
 >
 > FinePrint helps you understand the "fine print" in Terms of Service, Privacy Policies, and Contracts. It uses advanced AI to detect high-risk clauses, protecting you from predatory legal terms.
 
+[← Back to Vibe Artifacts](../README.md)
+
 ---
 
 ## 🌟 Why Use FinePrint?

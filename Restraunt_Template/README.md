@@ -1,5 +1,7 @@
 # Restaurant Template (Oh Indore)
 
+[← Back to Vibe Artifacts](../README.md)
+
 A premium, modern restaurant website template built with React, Vite, and Tailwind CSS. This template features smooth animations, responsive design, and a polished user interface suitable for high-end dining experiences.
 
 ## Features

@@ -2,6 +2,8 @@
 
 > **Craft the perfect prompt with the power of next-gen AI.**
 
+[← Back to Vibe Artifacts](../README.md)
+
 Vibe Prompt Builder is a futuristic browser extension designed to elevate your prompt engineering workflow. By harnessing the capabilities of hypothetical 2026 AI models, it transforms raw ideas into high-fidelity, professional prompts instantly.
 
 ## 🚀 Overview
