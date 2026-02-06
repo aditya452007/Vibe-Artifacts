@@ -6,82 +6,72 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  REGION: us-central1
-
 jobs:
   test-backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.14'
-      - name: Install dependencies
+          python-version: '3.12'
+
+      - name: Install backend dependencies
         run: |
-          cd backend
+          cd Devops/calculator/backend
           pip install -r requirements.txt
-      - name: Run tests
+
+      - name: Run backend tests
         run: |
-          cd backend
-          # In a real scenario, we'd run pytest here. Currently setup to pass if pytest is missing or empty.
-          if [ -f "requirements.txt" ]; then pip install pytest; fi
-          if [ -d "tests" ]; then pytest; fi
+          cd Devops/calculator/backend
+          pytest
 
   test-frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
-      - name: Install and lint
-        run: |
-          cd frontend
-          npm ci
-          npm run lint
+          node-version: '20'
 
-  build-and-deploy:
+      - name: Install frontend dependencies
+        run: |
+          cd Devops/calculator/frontend
+          npm ci
+
+      - name: Build frontend
+        run: |
+          cd Devops/calculator/frontend
+          npm run build
+
+  deploy:
     needs: [test-backend, test-frontend]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+
     steps:
-      - uses: actions/checkout@v4
-      
-      # Mock deployment steps for this educational project structure
-      # In a real project with secrets configured, these would run.
-      
-      - name: Authenticate to Google Cloud (Placeholder)
-        run: echo "Skipping actual GCP Auth for this template"
-        
-      # - name: Authenticate to Google Cloud
-      #   uses: google-github-actions/auth@v2
-      #   with:
-      #     credentials_json: ${{ secrets.GCP_SA_KEY }}
-      
-      # - name: Set up Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@v2
-      
-      # - name: Configure Docker
-      #   run: gcloud auth configure-docker
-      
-      # - name: Build and push backend
-      #   run: |
-      #     docker build -t gcr.io/$PROJECT_ID/calculator-backend:$GITHUB_SHA ./backend
-      #     docker push gcr.io/$PROJECT_ID/calculator-backend:$GITHUB_SHA
-      
-      # - name: Build and push frontend
-      #   run: |
-      #     docker build -t gcr.io/$PROJECT_ID/calculator-frontend:$GITHUB_SHA ./frontend
-      #     docker push gcr.io/$PROJECT_ID/calculator-frontend:$GITHUB_SHA
-      
-      # - name: Deploy backend to Cloud Run
-      #   run: |
-      #     gcloud run deploy calculator-backend \
-      #       --image gcr.io/$PROJECT_ID/calculator-backend:$GITHUB_SHA \
-      #       --platform managed \
-      #       --region $REGION \
-      #       --allow-unauthenticated
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to GCP VM via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            set -e
+
+            cd /opt/apps/Vibe-Artifacts
+            git pull origin main
+
+            cd Devops/calculator
+
+            docker compose down
+            docker compose build --no-cache
+            docker compose up -d
+
+            docker ps

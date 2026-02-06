@@ -2,6 +2,15 @@
 .DS_Store
 *.log
 
+# SSH keys (DO NOT COMMIT)
+github-actions
+github-actions.pub
+
+# Local secrets
+*.pem
+*.key
+.env
+
 # Python / Flask
 __pycache__/
 *.py[cod]
