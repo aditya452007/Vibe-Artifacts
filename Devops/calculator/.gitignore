@@ -1,0 +1,25 @@
+# General
+.DS_Store
+*.log
+
+# Python / Flask
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+.env
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node / React
+node_modules/
+dist/
+dist-ssr/
+*.local
+.npm/
+
+# IDEs
+.vscode/
+.idea/
