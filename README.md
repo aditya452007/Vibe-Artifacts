@@ -18,6 +18,7 @@ graph TD;
     A[Vibe Artifacts] --> B[Flagship Artifacts];
     A --> C[Creative Tools];
     A --> D[Knowledge & Templates];
+    A --> E[DevOps & Infra];
 
     B --> B1[🔮 Git-Aura];
     B --> B2[🛡️ FinePrint];
@@ -28,6 +29,8 @@ graph TD;
 
     D --> D1[📝 Prompt Eng.];
     D --> D2[🍽️ Restaurant Tmpl];
+
+    E --> E1[🧮 Calculator];
 ```
 
 ---
@@ -58,6 +61,13 @@ graph TD;
 | :--- | :--- | :--- |
 | [**Prompt Engineering**](./prompt%20engineering/README.md) | **The Knowledge Base.** A comprehensive guide to advanced prompting architectures (CoT, ToT, RAG). | Next.js, Markdown |
 | [**Restaurant Template**](./Restraunt_Template/README.md) | **Premium Web Template.** A buttery-smooth, animated website template for high-end dining. | React, Vite, GSAP |
+
+### 🔧 Infrastructure & DevOps
+*Engineering the pipeline and deployment.*
+
+| Artifact | Description | Tech Stack |
+| :--- | :--- | :--- |
+| [**Scientific Calculator**](./Devops/calculator/README.md) | **Full-Stack DevOps Demo.** A complete web app with containerization, monitoring, and automated testing. | Flask, React, Docker, Prometheus |
 
 ---
 
