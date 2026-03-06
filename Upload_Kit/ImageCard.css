@@ -1,0 +1,69 @@
+.image-card {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-bg-card);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.image-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.image-card__media-wrap {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.image-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.image-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.image-card:hover .image-card__overlay {
+    opacity: 1;
+}
+
+.image-card__date {
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.image-card__delete-btn {
+    background: rgba(220, 20, 60, 0.85);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.image-card__delete-btn:hover {
+    background: var(--color-error);
+}
+
+.image-card__delete-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
